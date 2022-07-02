@@ -18,9 +18,10 @@ function formValidation () {
 
 // async function to fetch API
 
-async function getAPI (location){
+async function getAPI (location) {
     try {
-        const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${API_keys}&units=metric`, {mode: 'cors'});
+        const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${API_keys}&units=metric`, 
+        {mode: 'cors'});
         const data = await response.json()
         console.table(data);
         return data
@@ -31,6 +32,17 @@ async function getAPI (location){
 };
 
 getAPI('Euzet')
+
+
+// function who convert celsius into fahrenheit
+
+function convertCelsiusToFahrenheit (celsius) {
+    let fahrenheit = ((celsius) * (9/5) + 32)
+    return Math.round((fahrenheit + Number.EPSILON) * 100) / 100
+};
+
+
+console.log(convertCelsiusToFahrenheit(40))
 
 
 
