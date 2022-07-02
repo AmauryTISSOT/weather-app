@@ -23,16 +23,13 @@ async function getAPI (location) {
         const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${API_keys}&units=metric`, 
         {mode: 'cors'});
         const data = await response.json()
-        console.table(data);
+        console.log(data)
         return data
         
     } catch (error) {
         console.log(error)
     }
 };
-
-getAPI('Euzet')
-
 
 // function who convert celsius into fahrenheit
 
@@ -41,14 +38,24 @@ function convertCelsiusToFahrenheit (celsius) {
     return Math.round((fahrenheit + Number.EPSILON) * 100) / 100
 };
 
+// function to parse API data
 
-console.log(convertCelsiusToFahrenheit(40))
+async function parseAPIdata (location){
+    const JsonData = await getAPI(location);
+    console.log(JsonData)
+
+    function dataConstructor(json) {
+        this.weather = json.weather[0].description;
+        this.temperature = json.main.temp;
+        this.wind = json.wind.speed;
+    }
+
+    const parseData = new dataConstructor(JsonData);
+    console.table(parseData)
+}
 
 
-
-
-
-
+parseAPIdata('Paris')
 
 
 
