@@ -10,6 +10,14 @@ body {
   align-items: center;
   height: 100vh;
   gap: 20px;
+  background-image: url(/images/background.jpg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+  background-color: #464646;
+  width: 100vw;
+  height: 100vh;
 }
 
 /* The switch - the box around the slider */
