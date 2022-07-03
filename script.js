@@ -11,6 +11,7 @@ function formValidation () {
         event.preventDefault();
         inputValue = document.querySelector('input').value
         console.log(inputValue)
+        parseAPIdata(inputValue).then((object) => displayData(object))
 
         // maybe the inputValue need to be process (toLowerCase ?)
     })
@@ -23,7 +24,6 @@ async function getAPI (location) {
         const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${API_keys}&units=metric`, 
         {mode: 'cors'});
         const data = await response.json()
-        console.log(data)
         return data
         
     } catch (error) {
@@ -42,7 +42,6 @@ function convertCelsiusToFahrenheit (celsius) {
 
 async function parseAPIdata (location){
     const JsonData = await getAPI(location);
-    console.log(JsonData)
 
     function dataConstructor(json) {
         this.weather = json.weather[0].description;
@@ -51,12 +50,38 @@ async function parseAPIdata (location){
     }
 
     const parseData = new dataConstructor(JsonData);
-    console.table(parseData)
+    return parseData
+}
+
+// Function to display weather data 
+
+function displayData (object) {
+    const contentE = document.querySelector('.content');
+    deleteCurrentElement(contentE);
+    const weatherE = document.createElement('div');
+    contentE.appendChild(weatherE).textContent = object.weather;
+
+    const tempE = document.createElement('div');
+    contentE.appendChild(tempE).textContent = `${roundValue(object.temperature)} C°`;
+
+    const windE = document.createElement('div');
+    contentE.appendChild(windE).textContent = object.wind;
 }
 
 
-parseAPIdata('Paris')
+// Function to round value
+function roundValue (value) {
+    return Math.floor(value)
+}
 
 
+// Function to delete all the child element 
+function deleteCurrentElement(element){
+        let first = element.firstElementChild;
+        while (first) {
+            first.remove();
+            first = element.firstElementChild;
+        }
+    };
 
 formValidation();
